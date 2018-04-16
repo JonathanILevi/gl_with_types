@@ -12,3 +12,5 @@ gl-with-objects-test-*
 *.o
 *.obj
 *.lst
+
+\.vs/
