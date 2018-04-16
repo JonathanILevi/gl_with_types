@@ -1,0 +1,14 @@
+.dub
+docs.json
+__dummy.html
+docs/
+gl-with-objects.so
+gl-with-objects.dylib
+gl-with-objects.dll
+gl-with-objects.a
+gl-with-objects.lib
+gl-with-objects-test-*
+*.exe
+*.o
+*.obj
+*.lst
