@@ -36,10 +36,7 @@ alias GeometryShader	= Shader!(ShaderType.Geometry	) ;
 void
 create(ShaderType shaderType)(ref Shader!shaderType shader)
 {
-	import std.stdio;
-	"ad".writeln;
 	shader.id = glCreateShader(shaderType);
-	shader.id.writeln;
 }
 /**	glDeleteShader wrapper.
 */

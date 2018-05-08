@@ -81,10 +81,7 @@ enum BufferUsage {
 void
 gen(BufferType bufferType)(ref Buffer!bufferType buffer)
 {
-	import std.stdio;
-	"hi".writeln;
 	glGenBuffers(1, &buffer.id);
-	buffer.id.writeln;
 }
 /**	glGenBuffers() wrapper.
 */

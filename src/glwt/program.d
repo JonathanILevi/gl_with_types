@@ -30,10 +30,7 @@ void
 create(ref Program program)
 {
 	import std.stdio;
-	"ad".writeln;
 	program.id = glCreateProgram();
-	"program".writeln;
-	program.id.writeln;
 }
 /**	glDeleteProgram wrapper.
 */
@@ -55,9 +52,9 @@ del(ref Program program)
 
 enum string program_ensureGen_m = "version(assert){assert(program.id!=0, \"Program not created.  Call `program.create` before using this function.\");}";
 enum string program_ensureBound_m = program_ensureGen_m~"version(assert){
-uint bp;//bound program
-glGetIntegerv(GL_CURRENT_PROGRAM, cast(int*)&bp);
-assert(program.id==bp, \"Program not in use (bound).  Call `program.use` before using this function.\");
+	uint bp;//bound program
+	glGetIntegerv(GL_CURRENT_PROGRAM, cast(int*)&bp);
+	assert(program.id==bp, \"Program not in use (bound).  Call `program.use` before using this function.\");
 }";
 
 
@@ -95,9 +92,6 @@ use(Program program)
 	uint bp;//bound program
 	glGetIntegerv(GL_CURRENT_PROGRAM, cast(int*)&bp);
 	"d".checkError;
-	import std.stdio;
-	program.id.writeln;
-	bp.writeln;
 }
 /**ditto*/
 alias bind=use;
@@ -171,8 +165,7 @@ alias getUniformLocation = getUniform;
 void uniform	(Type)	(Program program, int uniform, Type value )	if (mixin(constrainTypeWBool_m))	{	mixin(program_ensureBound_m); mixin("glUniform1"~mixin(typeToLetterWBool_m))	(uniform, value);	}
 void uniformVector	(int size:1, Type)	(Program program, int uniform, Type[size] value )	if (mixin(constrainTypeWBool_m) && size>0)	{	mixin(program_ensureBound_m); mixin("glUniform"~size.to!string~mixin(typeToLetterWBool_m))	(uniform, value[0]);	}
 void uniformVector	(int size:2, Type)	(Program program, int uniform, Type[size] value )	if (mixin(constrainTypeWBool_m) && size>0)	{	mixin(program_ensureBound_m); mixin("glUniform"~size.to!string~mixin(typeToLetterWBool_m))	(uniform, value[0],value[1]);	}
-void uniformVector	(int size:3, Type)	(Program program, int u
-										 ----niform, Type[size] value )	if (mixin(constrainTypeWBool_m) &&  size>0)	{	mixin(program_ensureBound_m); mixin("glUniform"~size.to!string~mixin(typeToLetterWBool_m))	(uniform, value[0],value[1],value[2]);	}
+void uniformVector	(int size:3, Type)	(Program program, int uniform, Type[size] value )	if (mixin(constrainTypeWBool_m) &&  size>0)	{	mixin(program_ensureBound_m); mixin("glUniform"~size.to!string~mixin(typeToLetterWBool_m))	(uniform, value[0],value[1],value[2]);	}
 void uniformVector	(int size:4, Type)	(Program program, int uniform, Type[size] value )	if (mixin(constrainTypeWBool_m) &&  size>0)	{	mixin(program_ensureBound_m); mixin("glUniform"~size.to!string~mixin(typeToLetterWBool_m))	(uniform, value[0],value[1],value[2],value[3]);	}
 void uniformArray	(int size, int length, Type)	(Program program, int uniform, Type[size][length] value )	if (mixin(constrainTypeWOBool_m) && size>0&&size<=4 && length>0)	{	mixin(program_ensureBound_m); mixin("glUniform"~size.to!string~mixin(typeToLetterWOBool_m)~"v")	(uniform, length, value.ptr.cst!(Type*));	}
 void uniformMatrix	(int width, int height, Type)	(Program program, int uniform, Type[width][height] value )	if (mixin(constrainTypeWOBool_m) && width>1&&width<=4 && height>1&&hight<=4)	{	mixin(program_ensureBound_m); mixin("glUniformMatrix"~width.to!string~"x"~height.to!string~mixin(typeToLetterWOBool_m)~"v")	(uniform, 1,value.ptr.cst!(Type*));	}

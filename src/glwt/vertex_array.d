@@ -38,10 +38,7 @@ struct VertexArray {
 void
 gen(ref VertexArray vertexArray)
 {
-	import std.stdio;
-	"ee".writeln;
 	glGenVertexArrays(1, &vertexArray.id);
-	vertexArray.id.writeln;
 }
 /**	glGenBuffers() wrapper.
 */
