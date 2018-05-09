@@ -7,7 +7,7 @@ import derelict.opengl	;
 
 
 /**	Unittest to ensure Compiler works as expected*/
-static this(){
+unittest {
 	ArrayBuffer	ab;
 	uint	au = *(cast(uint*)cast(void*)&ab);
 	assert(ab.id==au, "Error, byte data for Struct is not as expected.");
