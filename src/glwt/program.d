@@ -2,6 +2,8 @@
 
 module glwt.program;
 
+import std.conv : to;
+
 import cst_	;
 
 import derelict.opengl	;
@@ -163,13 +165,23 @@ alias getUniformLocation = getUniform;
 /**	glUniform wrapper
 */
 void uniform	(Type)	(Program program, int uniform, Type value )	if (mixin(constrainTypeWBool_m))	{	mixin(program_ensureBound_m); mixin("glUniform1"~mixin(typeToLetterWBool_m))	(uniform, value);	}
-void uniformVector	(int size:1, Type)	(Program program, int uniform, Type[size] value )	if (mixin(constrainTypeWBool_m) && size>0)	{	mixin(program_ensureBound_m); mixin("glUniform"~size.to!string~mixin(typeToLetterWBool_m))	(uniform, value[0]);	}
-void uniformVector	(int size:2, Type)	(Program program, int uniform, Type[size] value )	if (mixin(constrainTypeWBool_m) && size>0)	{	mixin(program_ensureBound_m); mixin("glUniform"~size.to!string~mixin(typeToLetterWBool_m))	(uniform, value[0],value[1]);	}
-void uniformVector	(int size:3, Type)	(Program program, int uniform, Type[size] value )	if (mixin(constrainTypeWBool_m) &&  size>0)	{	mixin(program_ensureBound_m); mixin("glUniform"~size.to!string~mixin(typeToLetterWBool_m))	(uniform, value[0],value[1],value[2]);	}
-void uniformVector	(int size:4, Type)	(Program program, int uniform, Type[size] value )	if (mixin(constrainTypeWBool_m) &&  size>0)	{	mixin(program_ensureBound_m); mixin("glUniform"~size.to!string~mixin(typeToLetterWBool_m))	(uniform, value[0],value[1],value[2],value[3]);	}
-void uniformArray	(int size, int length, Type)	(Program program, int uniform, Type[size][length] value )	if (mixin(constrainTypeWOBool_m) && size>0&&size<=4 && length>0)	{	mixin(program_ensureBound_m); mixin("glUniform"~size.to!string~mixin(typeToLetterWOBool_m)~"v")	(uniform, length, value.ptr.cst!(Type*));	}
-void uniformMatrix	(int width, int height, Type)	(Program program, int uniform, Type[width][height] value )	if (mixin(constrainTypeWOBool_m) && width>1&&width<=4 && height>1&&hight<=4)	{	mixin(program_ensureBound_m); mixin("glUniformMatrix"~width.to!string~"x"~height.to!string~mixin(typeToLetterWOBool_m)~"v")	(uniform, 1,value.ptr.cst!(Type*));	}
-void uniformMatrices	(int width, int height, int length, Type)	(Program program, int uniform, Type[width][height][amount] value )	if (mixin(constrainTypeWOBool_m) && width>1&&width<=4 && height>1&&hight<=4  && amount>0)	{	mixin(program_ensureBound_m); mixin("glUniformMatrix"~width.to!string~"x"~height.to!string~mixin(typeToLetterWOBool_m)~"v")	(uniform, length, value.ptr.cst!(Type*));	}
+void uniformVector	(Type, int size:1)	(Program program, int uniform, Type[size] value )	if (mixin(constrainTypeWBool_m) && size>0)	{	mixin(program_ensureBound_m); mixin("glUniform"~size.to!string~mixin(typeToLetterWBool_m))	(uniform, value[0]);	}
+void uniformVector	(Type, int size:2)	(Program program, int uniform, Type[size] value )	if (mixin(constrainTypeWBool_m) && size>0)	{	mixin(program_ensureBound_m); mixin("glUniform"~size.to!string~mixin(typeToLetterWBool_m))	(uniform, value[0],value[1]);	}
+void uniformVector	(Type, int size:3)	(Program program, int uniform, Type[size] value )	if (mixin(constrainTypeWBool_m) &&  size>0)	{	mixin(program_ensureBound_m); mixin("glUniform"~size.to!string~mixin(typeToLetterWBool_m))	(uniform, value[0],value[1],value[2]);	}
+void uniformVector	(Type, int size:4)	(Program program, int uniform, Type[size] value )	if (mixin(constrainTypeWBool_m) &&  size>0)	{	mixin(program_ensureBound_m); mixin("glUniform"~size.to!string~mixin(typeToLetterWBool_m))	(uniform, value[0],value[1],value[2],value[3]);	}
+void uniformArray	(Type, int size, int length)	(Program program, int uniform, Type[size][length] value )	if (mixin(constrainTypeWOBool_m) && size>0&&size<=4 && length>0)	{	mixin(program_ensureBound_m); mixin("glUniform"~size.to!string~mixin(typeToLetterWOBool_m)~"v")	(uniform, length, value.ptr.cst!(Type*));	}
+void uniformMatrix	(Type, int width, int height)	(Program program, int uniform, Type[width][height] value, bool transpose=false )	if (mixin(constrainTypeWOBool_m) && width>1&&width<=4 && height>1&&height<=4)	{	static if (width==height) {
+						mixin(program_ensureBound_m); mixin("glUniformMatrix"~width.to!string~mixin(typeToLetterWOBool_m)~"v")	(uniform, 1, transpose, value.ptr.cst!(Type*));
+					} else {
+						mixin(program_ensureBound_m); mixin("glUniformMatrix"~width.to!string~"x"~height.to!string~mixin(typeToLetterWOBool_m)~"v")	(uniform, 1, transpose, value.ptr.cst!(Type*));
+					}
+				}
+void uniformMatrices	(int width, int height, int length, Type)	(Program program, int uniform, Type[width][height][amount] value, bool transpose=false )	if (mixin(constrainTypeWOBool_m) && width>1&&width<=4 && height>1&&height<=4  && amount>0)	{	static if (width==height) {
+						mixin(program_ensureBound_m); mixin("glUniformMatrix"~width.to!string~mixin(typeToLetterWOBool_m)~"v")	(uniform, length, transpose, value.ptr.cst!(Type*));
+					} else {
+						mixin(program_ensureBound_m); mixin("glUniformMatrix"~width.to!string~"x"~height.to!string~mixin(typeToLetterWOBool_m)~"v")	(uniform, length, transpose, value.ptr.cst!(Type*));
+					}
+				}
 
 alias setUniform	= uniform	;
 alias setUniformVector	= uniformVector	;
