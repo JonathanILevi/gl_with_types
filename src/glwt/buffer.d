@@ -24,6 +24,15 @@ unittest {
 /**	A wrapper for buffers.*/
 struct Buffer(BufferType bufferType) {
 	uint id = 0;
+	static Buffer!bufferType opCall(void[] data, BufferUsage usage) {
+		import std.stdio;
+		bufferType.writeln;
+		Buffer!bufferType buffer;
+		buffer.gen;
+		buffer.bind;
+		buffer.data(data,usage);
+		return buffer;
+	}
 }
 alias ArrayBuffer	= Buffer!(BufferType.Array	) ;
 alias AtomicCounterBuffer	= Buffer!(BufferType.AtomicCounter	) ;
